@@ -2,10 +2,11 @@ package com.example.cleanarchitecture.presentation.ui.home.users
 
 import androidx.lifecycle.MutableLiveData
 import com.example.cleanarchitecture.core.data.User
-import com.example.cleanarchitecture.core.usecase.GetAllUsers
-import com.example.d2m.screens.utils.base_classes.BaseViewModel
+import com.example.cleanarchitecture.core.domain.UserRepository
+import com.example.cleanarchitecture.presentation.utils.base_classes.BaseViewModel
 
-class UsersViewModel(getAllUsers: GetAllUsers) : BaseViewModel() {
+class UsersViewModel(userRepository: UserRepository) : BaseViewModel() {
 
-    var usersLiveData: MutableLiveData<List<User>> = getAllUsers.invoke() as MutableLiveData<List<User>>
+    val usersLiveData: MutableLiveData<List<User>> =
+        userRepository.getAllUsers() as MutableLiveData<List<User>>
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -34,13 +35,14 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        viewBinding = true
         dataBinding = true
     }
 }
 
 dependencies {
 
-    implementation(libs.androidx.room.compiler)
+    annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
     val navVersion = "2.7.7"

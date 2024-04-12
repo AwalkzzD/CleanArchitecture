@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cleanarchitecture.R
 import com.example.cleanarchitecture.core.data.User
 import com.example.cleanarchitecture.databinding.FragmentUsersBinding
-import com.example.d2m.screens.utils.adapters.GenericDataAdapter
-import com.example.d2m.screens.utils.base_classes.BaseFragment
+import com.example.cleanarchitecture.presentation.utils.adapters.GenericDataAdapter
+import com.example.cleanarchitecture.presentation.utils.base_classes.BaseFragment
 
 class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
     R.layout.fragment_users, UsersViewModel::class.java
@@ -24,7 +24,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
 
     private fun setUpViewModel() {
         fragmentViewModel.usersLiveData.observe(viewLifecycleOwner) {
-            // TODO: observe changes
+            usersAdapter.notifyDataSetChanged()
         }
     }
 
@@ -32,7 +32,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
         usersAdapter = GenericDataAdapter(usersList, R.layout.user_list_item) {
             showToast(it.firstName, Toast.LENGTH_SHORT)
         }
-
 
         fragmentBinding.userRv.apply {
             layoutManager = LinearLayoutManager(requireActivity())

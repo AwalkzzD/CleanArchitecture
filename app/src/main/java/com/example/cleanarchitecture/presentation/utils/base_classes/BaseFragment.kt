@@ -1,4 +1,4 @@
-package com.example.d2m.screens.utils.base_classes
+package com.example.cleanarchitecture.presentation.utils.base_classes
 
 import android.app.AlertDialog
 import android.os.Bundle

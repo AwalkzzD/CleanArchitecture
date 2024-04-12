@@ -1,4 +1,4 @@
-package com.example.d2m.screens.utils.base_classes
+package com.example.cleanarchitecture.presentation.utils.base_classes
 
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
-import com.example.d2m.R
+import com.example.cleanarchitecture.R
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
     @LayoutRes private val layoutId: Int, private val viewModelClass: Class<VM>

@@ -1,14 +1,11 @@
 package com.example.cleanarchitecture.presentation.ui.home
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.example.cleanarchitecture.R
+import com.example.cleanarchitecture.databinding.ActivityHomeBinding
+import com.example.cleanarchitecture.presentation.utils.base_classes.BaseActivity
+import com.example.cleanarchitecture.presentation.utils.base_classes.BaseViewModel
 
-class HomeActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_home)
-
-    }
-}
+class HomeActivity : BaseActivity<ActivityHomeBinding, BaseViewModel>(
+    R.layout.activity_home,
+    BaseViewModel::class.java
+)
