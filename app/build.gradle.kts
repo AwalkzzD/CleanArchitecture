@@ -1,7 +1,7 @@
 plugins {
+    id("kotlin-kapt")
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    id("kotlin-kapt")
 }
 
 android {
@@ -42,10 +42,17 @@ android {
 
 dependencies {
 
-    annotationProcessor(libs.androidx.room.compiler)
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
     val navVersion = "2.7.7"
+
+    implementation("androidx.fragment:fragment-ktx:1.5.6")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

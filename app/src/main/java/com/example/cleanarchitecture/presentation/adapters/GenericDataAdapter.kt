@@ -1,4 +1,4 @@
-package com.example.cleanarchitecture.presentation.utils.adapters
+package com.example.cleanarchitecture.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

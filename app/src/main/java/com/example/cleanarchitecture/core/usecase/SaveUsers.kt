@@ -1,11 +1,11 @@
 package com.example.cleanarchitecture.core.usecase
 
-import androidx.lifecycle.LiveData
 import com.example.cleanarchitecture.core.data.User
 import com.example.cleanarchitecture.core.domain.UserRepository
 
-class GetAllUsers(private val userRepository: UserRepository) {
+class SaveUsers(private val userRepository: UserRepository) {
 
-    fun invoke(): List<User> = userRepository.getAllUsers()
-
+    fun invoke(users: List<User>) {
+        userRepository.saveUsers(users)
+    }
 }

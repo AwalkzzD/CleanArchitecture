@@ -11,8 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProvider
 import com.example.cleanarchitecture.R
+import com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel
+import com.example.cleanarchitecture.presentation.utils.obtainViewModel
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
     @LayoutRes private val layoutId: Int, private val viewModelClass: Class<VM>
@@ -65,9 +66,10 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
         return super.onSupportNavigateUp()
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun getViewModel(): VM {
         if (!::viewModel.isInitialized) {
-            viewModel = ViewModelProvider(this)[viewModelClass]
+            viewModel = obtainViewModel(UsersViewModel::class.java) as VM
         }
         return viewModel
     }

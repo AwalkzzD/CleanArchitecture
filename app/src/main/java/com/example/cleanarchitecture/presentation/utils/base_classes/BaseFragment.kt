@@ -9,7 +9,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel
+import com.example.cleanarchitecture.presentation.utils.obtainViewModel
 
 abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
     @LayoutRes private val layoutId: Int, private val viewModelClass: Class<VM>
@@ -40,9 +41,10 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
 
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun getViewModel(): VM {
         if (!::viewModel.isInitialized) {
-            viewModel = ViewModelProvider(requireActivity())[viewModelClass]
+            viewModel = requireActivity().obtainViewModel(UsersViewModel::class.java) as VM
         }
         return viewModel
     }

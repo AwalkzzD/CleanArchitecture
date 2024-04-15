@@ -1,8 +1,8 @@
 package com.example.cleanarchitecture.core.domain
 
-import androidx.lifecycle.LiveData
 import com.example.cleanarchitecture.core.data.User
 
 interface UserRepository {
-    fun getAllUsers(): LiveData<List<User>>
+    fun getAllUsers(): List<User>
+    fun saveUsers(users: List<User>)
 }

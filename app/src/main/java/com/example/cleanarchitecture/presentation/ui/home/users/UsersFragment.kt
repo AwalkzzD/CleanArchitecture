@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cleanarchitecture.R
 import com.example.cleanarchitecture.core.data.User
 import com.example.cleanarchitecture.databinding.FragmentUsersBinding
-import com.example.cleanarchitecture.presentation.utils.adapters.GenericDataAdapter
+import com.example.cleanarchitecture.presentation.adapters.GenericDataAdapter
 import com.example.cleanarchitecture.presentation.utils.base_classes.BaseFragment
+
+private const val TAG = "UsersFragment"
 
 class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
     R.layout.fragment_users, UsersViewModel::class.java
@@ -16,14 +18,24 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
     private val usersList: MutableList<User> = mutableListOf()
 
     override fun setUpView() {
+        setUpListener()
         setUpRecyclerView()
         setUpViewModel()
 
         super.setUpView()
     }
 
+    private fun setUpListener() {
+        fragmentBinding.saveToDb.setOnClickListener {
+            fragmentViewModel.saveUsers(usersList)
+        }
+    }
+
     private fun setUpViewModel() {
+        fragmentViewModel.getUsers()
         fragmentViewModel.usersLiveData.observe(viewLifecycleOwner) {
+            usersList.clear()
+            usersList.addAll(it)
             usersAdapter.notifyDataSetChanged()
         }
     }
