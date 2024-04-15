@@ -3,10 +3,10 @@ package com.example.cleanarchitecture.presentation.ui.home.users
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cleanarchitecture.R
-import com.example.cleanarchitecture.core.data.User
+import com.example.cleanarchitecture.data.dto.user.User
 import com.example.cleanarchitecture.databinding.FragmentUsersBinding
-import com.example.cleanarchitecture.presentation.adapters.GenericDataAdapter
-import com.example.cleanarchitecture.presentation.utils.base_classes.BaseFragment
+import com.example.cleanarchitecture.base.adapter.GenericDataAdapter
+import com.example.cleanarchitecture.base.views.BaseFragment
 
 private const val TAG = "UsersFragment"
 

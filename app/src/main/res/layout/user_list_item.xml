@@ -7,7 +7,7 @@
 
         <variable
             name="user"
-            type="com.example.cleanarchitecture.core.data.User" />
+            type="com.example.cleanarchitecture.data.dto.user.User" />
 
     </data>
 
