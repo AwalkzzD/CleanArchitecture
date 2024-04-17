@@ -3,12 +3,12 @@ package com.example.cleanarchitecture.base.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.cleanarchitecture.base.utils.UserAppDatabase
+import com.example.cleanarchitecture.data.repository.user.UserLocalDataSourceImpl
+import com.example.cleanarchitecture.data.repository.user.UserRemoteDataSourceImpl
 import com.example.cleanarchitecture.domain.repository.UserRepositoryImpl
 import com.example.cleanarchitecture.domain.usecase.user.GetAllUsers
 import com.example.cleanarchitecture.domain.usecase.user.SaveUsers
-import com.example.cleanarchitecture.data.repository.user.UserLocalDataSourceImpl
-import com.example.cleanarchitecture.base.utils.UserAppDatabase
-import com.example.cleanarchitecture.data.repository.user.UserRemoteDataSourceImpl
 import com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel
 
 class ViewModelFactory(
@@ -21,7 +21,9 @@ class ViewModelFactory(
 
     private val userRepository: UserRepositoryImpl by lazy {
         UserRepositoryImpl(
-            UserLocalDataSourceImpl(userAppDatabase.userDao()), UserRemoteDataSourceImpl()
+            UserLocalDataSourceImpl(userAppDatabase.userDao()),
+            UserRemoteDataSourceImpl(),
+            mApplication.applicationContext
         )
     }
 

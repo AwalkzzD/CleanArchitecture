@@ -23,9 +23,9 @@ class UserRemoteDataSourceImpl : UserRemoteDataSource {
         id = id, avatar = avatar, email = email, firstName = firstName, lastName = lastName
     )
 
-    override fun getAllUsersRemote(): LiveData<List<User>> {
+    override fun getAllUsersRemote(currentPage: Int): LiveData<List<User>> {
         val retrofitInstance = ApiClient.createService(GetAllUsers::class.java) as GetAllUsers
-        val retrofitData = retrofitInstance.getAllUsers(1)
+        val retrofitData = retrofitInstance.getAllUsers(currentPage)
         retrofitData.enqueue(object : Callback<UserResponse?> {
             override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
                 userData.postValue(response.body()?.data ?: emptyList())

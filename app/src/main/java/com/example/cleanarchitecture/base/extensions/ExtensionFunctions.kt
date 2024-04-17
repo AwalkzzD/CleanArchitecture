@@ -1,5 +1,8 @@
 package com.example.cleanarchitecture.base.extensions
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -24,4 +27,25 @@ fun <T> List<T>.toLiveData(): LiveData<List<T>> {
     val liveData = MutableLiveData<List<T>>()
     liveData.value = this
     return liveData
+}
+
+fun <T> LiveData<List<T>>.toList(): List<T> {
+    return this.value ?: emptyList()
+}
+
+fun isNetworkAvailable(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val capabilities =
+        connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+    if (capabilities != null) {
+        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+            return true
+        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+            return true
+        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+            return true
+        }
+    }
+    return false
 }

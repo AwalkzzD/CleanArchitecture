@@ -11,14 +11,15 @@ class UsersViewModel(private val getAllUsers: GetAllUsers, private val saveUsers
     BaseViewModel() {
 
     var usersLiveData: MutableLiveData<List<User>> = MutableLiveData()
+    private var currentPage = 0
 
     fun getUsers() {
-        usersLiveData = getAllUsers.invoke() as MutableLiveData<List<User>>
+        currentPage = currentPage.inc()
+        usersLiveData = getAllUsers.invoke(currentPage) as MutableLiveData<List<User>>
     }
 
     fun saveUsers(users: List<User>) {
         Log.d("TAG", "save users data -> $users ")
         saveUsers.invoke(users)
     }
-
 }

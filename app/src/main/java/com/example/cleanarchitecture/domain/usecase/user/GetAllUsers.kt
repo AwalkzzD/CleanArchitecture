@@ -5,7 +5,5 @@ import com.example.cleanarchitecture.data.dto.user.User
 import com.example.cleanarchitecture.domain.repository.UserRepository
 
 class GetAllUsers(private val userRepository: UserRepository) {
-
-    fun invoke(): LiveData<List<User>> = userRepository.getAllUsers()
-
+    fun invoke(currentPage: Int): LiveData<List<User>> = userRepository.getAllUsers(currentPage)
 }
