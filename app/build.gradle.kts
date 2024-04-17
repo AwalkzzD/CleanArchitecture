@@ -76,4 +76,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 //    Picasso
     implementation("com.squareup.picasso:picasso:2.8")
+
 }

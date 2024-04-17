@@ -14,8 +14,10 @@ class UsersViewModel(private val getAllUsers: GetAllUsers, private val saveUsers
     private var currentPage = 0
 
     fun getUsers() {
+        setLoadingState(true)
         currentPage = currentPage.inc()
         usersLiveData = getAllUsers.invoke(currentPage) as MutableLiveData<List<User>>
+        setLoadingState(false)
     }
 
     fun saveUsers(users: List<User>) {

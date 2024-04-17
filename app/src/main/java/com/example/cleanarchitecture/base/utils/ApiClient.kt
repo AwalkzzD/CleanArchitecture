@@ -6,35 +6,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class ApiClient {
+object ApiClient {
+    private var retrofitClient: Retrofit? = null
 
-    companion object {
+    private val httpClient = OkHttpClient.Builder()
+        .connectTimeout(AppConstants.CONNECTION_TIME_OUT.toLong(), TimeUnit.MILLISECONDS)
+        .readTimeout(AppConstants.READ_TIME_OUT.toLong(), TimeUnit.MILLISECONDS)
+        .writeTimeout(AppConstants.WRITE_TIME_OUT.toLong(), TimeUnit.MILLISECONDS).build()
 
-        private var retrofitService: Any? = null
-        private var retrofitClient: Retrofit? = null
-
-        private val httpClient = OkHttpClient.Builder()
-            .connectTimeout(AppConstants.CONNECTION_TIME_OUT.toLong(), TimeUnit.MILLISECONDS)
-            .readTimeout(AppConstants.READ_TIME_OUT.toLong(), TimeUnit.MILLISECONDS)
-            .writeTimeout(AppConstants.WRITE_TIME_OUT.toLong(), TimeUnit.MILLISECONDS).build()
-
-        private fun getRetrofitClient(): Retrofit {
-            return if (retrofitClient != null) {
-                retrofitClient as Retrofit
-            } else {
-                retrofitClient = Retrofit.Builder().baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create()).client(httpClient).build()
-                retrofitClient as Retrofit
-            }
-        }
-
-        fun <S> createService(serviceClass: Class<S>): Any? {
-            return getRetrofitClient().create(serviceClass)
-        }
-
-        fun destroyInstance() {
-            retrofitService = null
-        }
+    private fun getRetrofitClient(): Retrofit = (retrofitClient) ?: run {
+        Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient).build().apply { retrofitClient = this }
     }
 
+    fun <S> createService(serviceClass: Class<S>): S = getRetrofitClient().create(serviceClass)
+
+    fun destroyInstance() {
+        retrofitClient = null
+    }
 }

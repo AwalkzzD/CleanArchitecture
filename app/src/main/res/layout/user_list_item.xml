@@ -27,9 +27,20 @@
             android:layout_margin="10dp"
             android:padding="5dp">
 
+            <ImageView
+                android:id="@+id/user_image"
+                imageUrl="@{user.avatar}"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/user_image"
                 android:text="@{user.firstName}"
                 android:textColor="@color/green"
                 android:textSize="17sp"

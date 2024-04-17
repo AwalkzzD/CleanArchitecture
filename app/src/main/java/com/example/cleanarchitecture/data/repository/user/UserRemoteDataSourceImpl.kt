@@ -1,5 +1,7 @@
 package com.example.cleanarchitecture.data.repository.user
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -24,17 +26,24 @@ class UserRemoteDataSourceImpl : UserRemoteDataSource {
     )
 
     override fun getAllUsersRemote(currentPage: Int): LiveData<List<User>> {
-        val retrofitInstance = ApiClient.createService(GetAllUsers::class.java) as GetAllUsers
-        val retrofitData = retrofitInstance.getAllUsers(currentPage)
-        retrofitData.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
-                userData.postValue(response.body()?.data ?: emptyList())
-            }
+        Handler(Looper.getMainLooper()).postDelayed({
+            val retrofitInstance = ApiClient.createService(GetAllUsers::class.java)
+            val retrofitData = retrofitInstance.getAllUsers(currentPage)
+            retrofitData.enqueue(object : Callback<UserResponse?> {
+                override fun onResponse(
+                    call: Call<UserResponse?>,
+                    response: Response<UserResponse?>
+                ) {
+                    userData.postValue(response.body()?.data ?: emptyList())
+                }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
-                userData.postValue(emptyList())
-            }
-        })
+                override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+                    userData.postValue(emptyList())
+                }
+            })
+
+            ApiClient.destroyInstance()
+        }, 1000)
 
         return userData.map { entities ->
             entities.map {

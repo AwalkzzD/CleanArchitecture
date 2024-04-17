@@ -1,20 +1,21 @@
 package com.example.cleanarchitecture.base.views
 
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.example.cleanarchitecture.R
-import com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel
-import com.example.cleanarchitecture.base.viewmodel.BaseViewModel
 import com.example.cleanarchitecture.base.extensions.obtainViewModel
+import com.example.cleanarchitecture.base.viewmodel.BaseViewModel
+import com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel
+
+private const val TAG = "BaseActivity"
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
     @LayoutRes private val layoutId: Int, private val viewModelClass: Class<VM>
@@ -38,19 +39,16 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
 
         viewModel = getViewModel()
 
-        val progressBar = ProgressBar(this, null, android.R.attr.progressBarStyleSmall)
+        val progressBar = ProgressBar(this)
         progressBar.isIndeterminate = true
-        progressBar.indeterminateDrawable.setColorFilter(
-            resources.getColor(R.color.black, null),
-            PorterDuff.Mode.SRC_IN
-        )
 
-        val layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        progressBar.layoutParams = layoutParams
-        addContentView(progressBar, layoutParams)
+        val parentLayout =
+            (findViewById<View>(android.R.id.content) as ViewGroup)
+
+        val params = RelativeLayout.LayoutParams(100, 100)
+        params.addRule(RelativeLayout.CENTER_IN_PARENT)
+
+        parentLayout.addView(progressBar, params)
 
         viewModel.isLoading.observe(this) {
             if (it) {

@@ -3,7 +3,7 @@ package com.example.cleanarchitecture.domain.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.cleanarchitecture.base.extensions.isNetworkAvailable
+import com.example.cleanarchitecture.base.extensions.NetworkUtils
 import com.example.cleanarchitecture.base.extensions.toLiveData
 import com.example.cleanarchitecture.data.dto.user.User
 
@@ -15,7 +15,7 @@ class UserRepositoryImpl(
     private val context: Context
 ) : UserRepository {
     override fun getAllUsers(currentPage: Int): LiveData<List<User>> =
-        if (isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             remoteDataSource.getAllUsersRemote(currentPage)
         } else {
             localDataSource.getAllUsersLocal().toLiveData()
