@@ -16,8 +16,9 @@ class GenericDataAdapter<T : Any>(
 ) : RecyclerView.Adapter<GenericDataAdapter<T>.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ViewDataBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutID, parent, false)
+        val binding: ViewDataBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context), layoutID, parent, false
+        )
         return ViewHolder(binding)
     }
 

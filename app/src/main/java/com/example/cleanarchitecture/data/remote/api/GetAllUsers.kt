@@ -8,6 +8,6 @@ import retrofit2.http.Query
 interface GetAllUsers {
 
     @GET("/api/users")
-    fun getAllUsers(@Query("page") page: Int): Call<UserResponse>
+    fun getAllUsers(@Query("page") page: Int, @Query("per_page") perPage: Int): Call<UserResponse>
 
 }

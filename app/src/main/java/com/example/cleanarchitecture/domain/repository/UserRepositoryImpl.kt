@@ -14,9 +14,9 @@ class UserRepositoryImpl(
     private val remoteDataSource: UserRemoteDataSource,
     private val context: Context
 ) : UserRepository {
-    override fun getAllUsers(currentPage: Int): LiveData<List<User>> =
+    override fun getAllUsers(currentPage: Int, perPage: Int): LiveData<List<User>> =
         if (NetworkUtils.isNetworkAvailable(context)) {
-            remoteDataSource.getAllUsersRemote(currentPage)
+            remoteDataSource.getAllUsersRemote(currentPage, perPage)
         } else {
             localDataSource.getAllUsersLocal().toLiveData()
         }

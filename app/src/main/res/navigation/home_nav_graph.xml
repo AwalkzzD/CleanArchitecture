@@ -9,5 +9,15 @@
         android:id="@+id/usersFragment"
         android:name="com.example.cleanarchitecture.presentation.ui.home.users.UsersFragment"
         android:label="fragment_users"
-        tools:layout="@layout/fragment_users" />
+        tools:layout="@layout/fragment_users">
+        <action
+            android:id="@+id/action_usersFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:popUpTo="@id/usersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.cleanarchitecture.presentation.ui.home.webview.WebViewFragment"
+        android:label="WebViewFragment"
+        tools:layout="@layout/fragment_web_view" />
 </navigation>

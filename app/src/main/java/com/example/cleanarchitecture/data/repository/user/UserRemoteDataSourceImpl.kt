@@ -5,6 +5,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
+import com.example.cleanarchitecture.base.extensions.toUser
 import com.example.cleanarchitecture.base.utils.ApiClient
 import com.example.cleanarchitecture.data.dto.user.User
 import com.example.cleanarchitecture.data.remote.api.GetAllUsers
@@ -21,14 +22,10 @@ class UserRemoteDataSourceImpl : UserRemoteDataSource {
 
     private val userData: MutableLiveData<List<Data>> = MutableLiveData()
 
-    private fun Data.toUser(): User = User(
-        id = id, avatar = avatar, email = email, firstName = firstName, lastName = lastName
-    )
-
-    override fun getAllUsersRemote(currentPage: Int): LiveData<List<User>> {
+    override fun getAllUsersRemote(currentPage: Int, perPage: Int): LiveData<List<User>> {
         Handler(Looper.getMainLooper()).postDelayed({
             val retrofitInstance = ApiClient.createService(GetAllUsers::class.java)
-            val retrofitData = retrofitInstance.getAllUsers(currentPage)
+            val retrofitData = retrofitInstance.getAllUsers(currentPage, perPage)
             retrofitData.enqueue(object : Callback<UserResponse?> {
                 override fun onResponse(
                     call: Call<UserResponse?>,
@@ -43,7 +40,7 @@ class UserRemoteDataSourceImpl : UserRemoteDataSource {
             })
 
             ApiClient.destroyInstance()
-        }, 1000)
+        }, 2000)
 
         return userData.map { entities ->
             entities.map {
@@ -51,4 +48,5 @@ class UserRemoteDataSourceImpl : UserRemoteDataSource {
             }
         }
     }
+
 }

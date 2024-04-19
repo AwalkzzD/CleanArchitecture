@@ -4,12 +4,17 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.cleanarchitecture.base.viewmodel.BaseViewModel
 import com.example.cleanarchitecture.base.viewmodel.ViewModelFactory
+import com.example.cleanarchitecture.data.dto.user.User
+import com.example.cleanarchitecture.data.local.model.get_users.UserEntity
+import com.example.cleanarchitecture.data.remote.model.get_users.Data
+
 
 inline fun <reified T : BaseViewModel> AppCompatActivity.obtainViewModel(): Lazy<T> =
     lazy { ViewModelProvider(this, ViewModelFactory.getInstance(application))[T::class.java] }
@@ -29,9 +34,17 @@ fun <T> List<T>.toLiveData(): LiveData<List<T>> {
     return liveData
 }
 
-fun <T> LiveData<List<T>>.toList(): List<T> {
-    return this.value ?: emptyList()
-}
+fun UserEntity.toUser(): User = User(
+    id = id, avatar = avatar, email = email, firstName = firstName, lastName = lastName
+)
+
+fun User.toUserEntity(): UserEntity = UserEntity(
+    id = id, avatar = avatar, email = email, firstName = firstName, lastName = lastName
+)
+
+fun Data.toUser(): User = User(
+    id = id, avatar = avatar, email = email, firstName = firstName, lastName = lastName
+)
 
 object NetworkUtils {
     fun isNetworkAvailable(context: Context): Boolean {

@@ -1,10 +1,6 @@
 package com.example.cleanarchitecture.base.views
 
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +10,6 @@ import androidx.databinding.ViewDataBinding
 import com.example.cleanarchitecture.base.extensions.obtainViewModel
 import com.example.cleanarchitecture.base.viewmodel.BaseViewModel
 import com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel
-
-private const val TAG = "BaseActivity"
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
     @LayoutRes private val layoutId: Int, private val viewModelClass: Class<VM>
@@ -28,7 +22,7 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
 
     /**
      * protected variable to use them in subclasses inheriting BaseActivity
-     * */
+     **/
     protected val activityBinding: VB get() = binding
     protected val activityViewModel: VM get() = viewModel
 
@@ -38,25 +32,6 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel>(
         binding = DataBindingUtil.setContentView(this, layoutId)
 
         viewModel = getViewModel()
-
-        val progressBar = ProgressBar(this)
-        progressBar.isIndeterminate = true
-
-        val parentLayout =
-            (findViewById<View>(android.R.id.content) as ViewGroup)
-
-        val params = RelativeLayout.LayoutParams(100, 100)
-        params.addRule(RelativeLayout.CENTER_IN_PARENT)
-
-        parentLayout.addView(progressBar, params)
-
-        viewModel.isLoading.observe(this) {
-            if (it) {
-                progressBar.visibility = View.VISIBLE
-            } else {
-                progressBar.visibility = View.GONE
-            }
-        }
 
     }
 

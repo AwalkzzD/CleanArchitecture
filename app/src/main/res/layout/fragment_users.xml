@@ -4,6 +4,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="loading"
+            type="com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel" />
     </data>
 
     <RelativeLayout
@@ -21,14 +26,21 @@
             android:textSize="20sp"
             android:textStyle="bold|italic" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/userRv"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/users_list_tv"
-            android:layout_margin="10dp"
-            tools:itemCount="5"
-            tools:listitem="@layout/user_list_item" />
+            android:layout_margin="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/userRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="5"
+                tools:listitem="@layout/user_list_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/save_to_db"
@@ -39,6 +51,16 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_add_user" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/green"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="@{(loading.isLoading()) ? View.VISIBLE : View.INVISIBLE}" />
 
     </RelativeLayout>
 </layout>

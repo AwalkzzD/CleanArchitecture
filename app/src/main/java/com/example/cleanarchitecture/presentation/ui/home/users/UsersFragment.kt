@@ -1,6 +1,7 @@
 package com.example.cleanarchitecture.presentation.ui.home.users
 
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cleanarchitecture.R
@@ -21,6 +22,8 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
         setUpRecyclerView()
         setUpViewModel()
 
+        fragmentBinding.loading = fragmentViewModel
+
         super.setUpView()
     }
 
@@ -33,11 +36,16 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
                 }
             }
         })
+
+        fragmentBinding.saveToDb.setOnClickListener {
+            findNavController().navigate(R.id.action_usersFragment_to_webViewFragment)
+        }
     }
 
     private fun setUpViewModel() {
         fragmentViewModel.getUsers()
         fragmentViewModel.usersLiveData.observe(viewLifecycleOwner) {
+            fragmentViewModel.isLoading.set(false)
             usersList.addAll(it)
             usersAdapter.notifyDataSetChanged()
 
@@ -50,6 +58,14 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
     }
 
     private fun setUpRecyclerView() {
+
+        fragmentBinding.swipeRefreshLayout.setOnRefreshListener {
+            usersList.clear()
+            fragmentViewModel.resetCurrentPage()
+            usersAdapter.notifyDataSetChanged()
+            fragmentViewModel.getUsers()
+        }
+
         usersAdapter = GenericDataAdapter(usersList, R.layout.user_list_item) {
             showToast(it.firstName, Toast.LENGTH_SHORT)
         }
