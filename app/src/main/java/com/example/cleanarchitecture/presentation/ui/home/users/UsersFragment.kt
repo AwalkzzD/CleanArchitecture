@@ -15,7 +15,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
 ) {
 
     private lateinit var usersAdapter: GenericDataAdapter<User>
-    private val usersList: MutableList<User> = mutableListOf()
+    private val usersList: MutableList<User?> = mutableListOf()
 
     override fun setUpView() {
         setUpListener()
@@ -46,8 +46,8 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
 
         fragmentViewModel.usersLiveData.observe(viewLifecycleOwner) { users ->
             if (!users.isNullOrEmpty()) {
-                if (fragmentBinding.swipeRefreshLayout.isRefreshing)
-                    fragmentBinding.swipeRefreshLayout.isRefreshing = false
+                if (fragmentBinding.swipeRefreshLayout.isRefreshing) fragmentBinding.swipeRefreshLayout.isRefreshing =
+                    false
 
                 fragmentViewModel.addCurrentPage()
                 fragmentViewModel.stopLoading()
@@ -71,7 +71,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
         fragmentBinding.swipeRefreshLayout.setOnRefreshListener {
             usersList.clear()
             fragmentViewModel.resetCurrentPage()
-            usersAdapter.notifyItemRangeChanged(usersList.size, usersList.size)
+            usersAdapter.notifyDataSetChanged()
             fragmentViewModel.getUsers()
         }
 
