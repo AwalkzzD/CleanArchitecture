@@ -52,15 +52,5 @@
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_add_user" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminateTint="@color/green"
-            android:indeterminateTintMode="src_atop"
-            android:visibility="@{(loading.isLoading()) ? View.VISIBLE : View.INVISIBLE}" />
-
     </RelativeLayout>
 </layout>

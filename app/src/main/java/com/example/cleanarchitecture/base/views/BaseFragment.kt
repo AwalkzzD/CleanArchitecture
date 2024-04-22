@@ -9,9 +9,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.example.cleanarchitecture.presentation.ui.home.users.UsersViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.cleanarchitecture.R
 import com.example.cleanarchitecture.base.viewmodel.BaseViewModel
-import com.example.cleanarchitecture.base.extensions.obtainViewModel
+import com.example.cleanarchitecture.base.viewmodel.ViewModelFactory
 
 abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
     @LayoutRes private val layoutId: Int, private val viewModelClass: Class<VM>
@@ -45,7 +46,9 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
     @Suppress("UNCHECKED_CAST")
     private fun getViewModel(): VM {
         if (!::viewModel.isInitialized) {
-            viewModel = requireActivity().obtainViewModel(UsersViewModel::class.java) as VM
+            viewModel = ViewModelProvider(
+                requireActivity(), ViewModelFactory.getInstance(requireActivity().application)
+            )[viewModelClass]
         }
         return viewModel
     }
@@ -80,6 +83,30 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel>(
         alert.show()
     }
 
-    open fun setUpView() {}
+    fun createProgressDialog(): AlertDialog {
+        val dialogBuilder = AlertDialog.Builder(requireActivity())
+        dialogBuilder.setView(R.layout.progress_dialog)
+        dialogBuilder.setCancelable(false)
+        return dialogBuilder.create()
+            .apply { window?.setBackgroundDrawableResource(android.R.color.transparent) }
+    }
+
+    fun handleProgressDialog() {
+        val dialogBuilder = AlertDialog.Builder(requireActivity())
+        dialogBuilder.setView(R.layout.progress_dialog)
+        dialogBuilder.setCancelable(false)
+        val progressDialog = dialogBuilder.create()
+            .apply { window?.setBackgroundDrawableResource(android.R.color.transparent) }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                progressDialog.show()
+            } else {
+                progressDialog.dismiss()
+            }
+        }
+    }
+
+    open fun setUpView() = Unit
 
 }

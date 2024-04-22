@@ -19,12 +19,11 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
 
     override fun setUpView() {
         setUpListener()
+        handleProgressDialog()
         setUpRecyclerView()
         setUpViewModel()
 
         fragmentBinding.loading = fragmentViewModel
-
-        super.setUpView()
     }
 
     private fun setUpListener() {
@@ -44,12 +43,23 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
 
     private fun setUpViewModel() {
         fragmentViewModel.getUsers()
-        fragmentViewModel.usersLiveData.observe(viewLifecycleOwner) {
-            fragmentViewModel.isLoading.set(false)
-            usersList.addAll(it)
-            usersAdapter.notifyDataSetChanged()
 
-            saveUsersToLocalDb(it)
+        fragmentViewModel.usersLiveData.observe(viewLifecycleOwner) { users ->
+            if (!users.isNullOrEmpty()) {
+                if (fragmentBinding.swipeRefreshLayout.isRefreshing)
+                    fragmentBinding.swipeRefreshLayout.isRefreshing = false
+
+                fragmentViewModel.addCurrentPage()
+                fragmentViewModel.stopLoading()
+
+                usersList.addAll(users)
+                usersAdapter.notifyItemRangeChanged(usersList.size, usersList.size + users.size)
+
+                saveUsersToLocalDb(users)
+            } else {
+                showToast("Unable to load more data", Toast.LENGTH_SHORT)
+                fragmentViewModel.stopLoading()
+            }
         }
     }
 
@@ -58,11 +68,10 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>(
     }
 
     private fun setUpRecyclerView() {
-
         fragmentBinding.swipeRefreshLayout.setOnRefreshListener {
             usersList.clear()
             fragmentViewModel.resetCurrentPage()
-            usersAdapter.notifyDataSetChanged()
+            usersAdapter.notifyItemRangeChanged(usersList.size, usersList.size)
             fragmentViewModel.getUsers()
         }
 
